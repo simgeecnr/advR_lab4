@@ -3,28 +3,36 @@ linreg <- function(data, formula){
   
   #CREATING MATRIX FROM DATAFRAME ACCORDING TO MODEL
   x_matrix <- model.matrix(formula, data = data)
+  
   #Extract the dependent variable
   y_data <- data.frame(iris[, (all.vars(formula)[1])])
   y_matrix <- as.matrix(y_data)
   colnames(y_matrix) <- all.vars(formula)[1]
   
-  #NECESSARY STATISTICS
+  #----------NECESSARY STATISTICS-----------
   #Regressions coefficients:
   reg_coef <- solve(t(x_matrix) %*% x_matrix) %*% t(x_matrix) %*% y_matrix
   colnames(reg_coef) <- "Coefficients:"
+  
   #The fitted values
   fitted_val <- x_matrix %*% reg_coef
+  
   #The residuals:
   res <- y_matrix - fitted_val
+  
   #The degrees of freedom:
   dof <- nrow(iris) - length(reg_coef)
+  
   #The residual variance: 
   res_var <- (t(res) %*% res) / dof
+  
   #The variance of the regression coefficients:
   sigma_hat <- sqrt(sum(res^2) / dof)
   var_reg_coef <- (sigma_hat^2) * diag(solve(t(x_matrix) %*% x_matrix))
+  
   #The t-values for each coefficient:
   t_values <- reg_coef / sqrt(var_reg_coef)
+  
   #p-values:
   p_values <- c()
   for (i in 1:length(t_values)) {
@@ -45,6 +53,32 @@ linreg <- function(data, formula){
                           print = function(){
                             return(reg_coef)
                           },
+                          #-------------------
+                          plot = function(){
+                            #Work in progress
+                            
+                            #One plot with Residuals (res) vs Fitted values (fitted_val)
+                            #Step 1 Create a dataframe df1 with res and fitted_val ?
+                            #Step 2 ggplot(df1)
+                            #Step 3 add geoms :
+                            #Step 4 add labels
+                            ggplot(data = df1,
+                                   mapping = aes(x = fitted_val,
+                                                 y = res))+
+                              geom_point()+
+                              geom_line(color = "red")
+                            
+                            #One plot sqrt(abs(standardized residuals)) vs fitted values
+                            #Step 1 calculate sqrt(abs(standardized residual)) ?
+                            #Step 2 create a dataframe df2 with x and y
+                            #Step 3 ggplot(df2)
+                            #Step 4 add geoms
+                            #Step 5 add labels
+                            
+                            #optional step : add theme
+                            return(NULL)
+                          },
+                          #----------------
                           resid = function(){
                             return(res)
                           },
@@ -56,7 +90,27 @@ linreg <- function(data, formula){
                             values <- c(reg_coef)
                             named_vector <- setNames(values, names)
                             return(named_vector)
+                          },
+                          #--------------
+                          summary = function(){
+                            #Work in progress:
+                            #Should return the coefs with std error, t-val, p-val sqrt(res_val), dof
+                            sigma <- sqrt(res_var)
+                            
+                            
+                            #Data frame for the summary table
+                            summary_df <- data.frame(
+                              Coefficients = reg_coef,
+                              Std.Error = sqrt(res_var),
+                              t.value = t_values,
+                              p.value = p_values
+                            )
+                            summary_df <- rbind(summary_df, c("Sigma", sigma, NA, NA, NA))
+                            summary_df <- rbind(summary_df, c("Degrees of Freedom", dof, NA, NA, NA))
+                            
+                            return(summary_df)
                           }
+                          #--------------
                         )
   )
   
