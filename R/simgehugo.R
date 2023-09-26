@@ -54,6 +54,15 @@ linreg <- function(formula, data){
                             values <- c(reg_coef)
                             named_vector <- setNames(values, names)
                             return(named_vector)
+                          },
+                          plot = function(){
+                            data2 <- data.frame(Fitted = fitted_val, Residuals = res)
+                            
+                            # Create a residuals vs. fitted values plot using ggplot2
+                            ggplot(data2, aes(x = fitted_val, y = res)) +
+                              geom_point() +
+                              stat_summary(aes(y = res, group = 1), fun=median, color ="red", geom="line", group=1) +
+                              labs(x = "Fitted Values", y = "Residuals", title = "Residuals vs. Fitted Values Plot")
                           }
                         )
   )
@@ -71,4 +80,4 @@ linreg <- function(formula, data){
 
 data(iris)
 k <- linreg(Petal.Length~Species, iris)
-typeof(k)
+k$plot()
