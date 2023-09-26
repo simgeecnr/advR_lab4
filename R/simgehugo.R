@@ -55,14 +55,46 @@ linreg <- function(formula, data){
                             named_vector <- setNames(values, names)
                             return(named_vector)
                           },
-                          plot = function(){
+                          plot = function(theme = "none"){
+                            
+                            source("R/liu_theme.R")
                             data2 <- data.frame(Fitted = fitted_val, Residuals = res)
                             
                             # Create a residuals vs. fitted values plot using ggplot2
-                            ggplot(data2, aes(x = fitted_val, y = res)) +
+                            p1 <-ggplot(data2, aes(x = fitted_val, y = res)) +
                               geom_point() +
                               stat_summary(aes(y = res, group = 1), fun=median, color ="red", geom="line", group=1) +
                               labs(x = "Fitted Values", y = "Residuals", title = "Residuals vs. Fitted Values Plot")
+                            #p1 <- p1 + liu_theme_dark()
+                            
+                            #Second plot
+                            standardized_residuals <- res / sd(res)
+                            y <- sqrt(abs(standardized_residuals))
+                            
+                            data3 <- data.frame(Fitted = fitted_val, StdRes = y)
+                            colnames(data3) <- c("Fitted", "StdRes")
+                            
+                            
+                            # Create a residuals vs. fitted values plot using ggplot2
+                            p2 <- ggplot(data3, aes(x = fitted_val, y = y)) +
+                              geom_point() +
+                              stat_summary(aes(y = y, group = 1), fun=median, color ="red", geom="line", group=1) +
+                              labs(x = "Fitted Values", y = "Standardized Residuals", title = "Scale-Location")
+                            #p2 <- p2 + liu_theme_light()
+                            
+                            if(theme == "light"){
+                              p1 <- p1 + liu_theme_light()
+                              p2 <- p2 + liu_theme_light()
+                              return(list(p1,p2))
+                            }else if(theme == "dark"){
+                              p1 <- p1 + liu_theme_dark()
+                              p2 <- p2 + liu_theme_dark()
+                              return(list(p1,p2))
+                            }else {
+                              p1 <- p1 + theme_bw()
+                              p2 <- p2 + theme_bw()
+                              return(list(p1,p2))
+                            }
                           }
                         )
   )
@@ -80,4 +112,4 @@ linreg <- function(formula, data){
 
 data(iris)
 k <- linreg(Petal.Length~Species, iris)
-k$plot()
+k$plot(theme = "dark")
