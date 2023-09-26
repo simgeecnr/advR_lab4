@@ -9,3 +9,8 @@ liu_theme <- function() {
     panel.grid.major = element_line(color = "gray", size = 0.2)
   )
 }
+
+#To use theme  : include the following line:
+#source("liu_theme.R")
+
+#Then, when using ggplot, simply use "+ liu_theme()"
