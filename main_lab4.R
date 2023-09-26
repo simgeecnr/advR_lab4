@@ -48,7 +48,8 @@ linreg <- function(data, formula){
                                       res_var = "matrix",
                                       var_reg_coef = "numeric", 
                                       t_values = "matrix",
-                                      p_values = "numeric"),
+                                      p_values = "numeric"
+                        ),
                         methods = list(
                           print = function(){
                             return(reg_coef)
@@ -58,22 +59,34 @@ linreg <- function(data, formula){
                             #Work in progress
                             
                             #One plot with Residuals (res) vs Fitted values (fitted_val)
-                            #Step 1 Create a dataframe df1 with res and fitted_val ?
-                            #Step 2 ggplot(df1)
-                            #Step 3 add geoms :
-                            #Step 4 add labels
+                            df1 <- data.frame(
+                              Residuals = res,
+                              Fitted = fitted_val
+                            )
                             ggplot(data = df1,
-                                   mapping = aes(x = fitted_val,
-                                                 y = res))+
-                              geom_point()+
+                                   mapping = aes(x = Fitted, y = Residuals)) +
+                              geom_point() +
                               geom_line(color = "red")
+                            labs(
+                              title = "Residuals vs Fitted",
+                              x = "Fitted Values",
+                              y = "Residuals"
+                            )
                             
                             #One plot sqrt(abs(standardized residuals)) vs fitted values
-                            #Step 1 calculate sqrt(abs(standardized residual)) ?
-                            #Step 2 create a dataframe df2 with x and y
-                            #Step 3 ggplot(df2)
-                            #Step 4 add geoms
-                            #Step 5 add labels
+                            df2 <- data.frame(
+                              StdRes = sqrt(res),
+                              Fitted = fitted_val
+                            )
+                            ggplot(data = df1,
+                                   mapping = aes(x = Fitted, y = StdRes)) +
+                              geom_point() +
+                              geom_line(color = "red")
+                            labs(
+                              title = "Scale-Location",
+                              x = "Fitted Values",
+                              y = "Standardized residuals"
+                            )
                             
                             #optional step : add theme
                             return(NULL)
@@ -111,8 +124,8 @@ linreg <- function(data, formula){
                             return(summary_df)
                           }
                           #--------------
-                        )
-  )
+                        ) #methods closing )
+  ) #linreg class closing )
   
   linreg <- linreg$new(reg_coef = reg_coef,
                        fitted_val = fitted_val,
