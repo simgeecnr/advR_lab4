@@ -1,3 +1,14 @@
+#' Linear Regression Model with Linear Algebra
+#'
+#' @description This function do the linear regression
+#' @param formula a linear regression model
+#' @param data a dataframe
+#' @return returns a RC class
+#' @export
+#' @examples
+#' linreg(Petal.Length~Species, data = iris)
+
+
 linreg <- function(formula, data){
   
   library(ggplot2)
@@ -124,6 +135,7 @@ linreg <- function(formula, data){
   return(linreg)
 }
 
-data(iris)
-k <- linreg(Petal.Length~Species, iris)
-k$summary() #add par. theme="light" or theme="dark"
+#data(iris)
+#k <- linreg(Petal.Length~Species, iris)
+#k$summary() 
+#add par. theme="light" or theme="dark"
