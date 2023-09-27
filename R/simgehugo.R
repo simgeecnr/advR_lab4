@@ -36,7 +36,7 @@ linreg <- function(formula, data){
                                       res = "matrix", 
                                       dof = "integer",
                                       res_var = "matrix",
-                                      var_reg_coef = "numeric", 
+                                      var_reg_coef = "numeric",
                                       t_values = "matrix",
                                       p_values = "numeric"),
                         methods = list(
@@ -65,22 +65,20 @@ linreg <- function(formula, data){
                               geom_point() +
                               stat_summary(aes(y = res, group = 1), fun=median, color ="red", geom="line", group=1) +
                               labs(x = "Fitted Values", y = "Residuals", title = "Residuals vs. Fitted Values Plot")
-                            #p1 <- p1 + liu_theme_dark()
                             
                             #Second plot
-                            standardized_residuals <- res / sd(res)
-                            y <- sqrt(abs(standardized_residuals))
+                            standardized_residuals <- res %*% (1 / sqrt(res_var))
+                            y_val <- sqrt(abs(standardized_residuals))
                             
-                            data3 <- data.frame(Fitted = fitted_val, StdRes = y)
+                            data3 <- data.frame(Fitted = fitted_val, StdRes = y_val)
                             colnames(data3) <- c("Fitted", "StdRes")
                             
                             
                             # Create a residuals vs. fitted values plot using ggplot2
-                            p2 <- ggplot(data3, aes(x = fitted_val, y = y)) +
+                            p2 <- ggplot(data3, aes(x = fitted_val, y = y_val)) +
                               geom_point() +
-                              stat_summary(aes(y = y, group = 1), fun=median, color ="red", geom="line", group=1) +
+                              stat_summary(aes(y = y_val, group = 1), fun=mean, color ="red", geom="line", group=1) +
                               labs(x = "Fitted Values", y = "Standardized Residuals", title = "Scale-Location")
-                            #p2 <- p2 + liu_theme_light()
                             
                             if(theme == "light"){
                               p1 <- p1 + liu_theme_light()
@@ -112,4 +110,4 @@ linreg <- function(formula, data){
 
 data(iris)
 k <- linreg(Petal.Length~Species, iris)
-k$plot(theme = "dark")
+k$plot() #add par. theme="light" or theme="dark"
