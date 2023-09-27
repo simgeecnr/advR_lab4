@@ -56,7 +56,8 @@ linreg <- function(formula, data){
                                       y_matrix = "matrix"),
                         methods = list(
                           print = function(){
-                            return(reg_coef)
+                            regression_coefficients <- reg_coef
+                            return(regression_coefficients)
                           },
                           resid = function(){
                             return(res)
