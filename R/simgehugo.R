@@ -1,4 +1,6 @@
 linreg <- function(formula, data){
+  
+  library(ggplot2)
   #CREATE MATRIX FROM DATAFRAME
   x_matrix <- model.matrix(formula, data)
   #Extract the dependent variable
@@ -38,7 +40,9 @@ linreg <- function(formula, data){
                                       res_var = "matrix",
                                       var_reg_coef = "numeric",
                                       t_values = "matrix",
-                                      p_values = "numeric"),
+                                      p_values = "numeric",
+                                      x_matrix = "matrix",
+                                      y_matrix = "matrix"),
                         methods = list(
                           print = function(){
                             return(reg_coef)
@@ -54,6 +58,16 @@ linreg <- function(formula, data){
                             values <- c(reg_coef)
                             named_vector <- setNames(values, names)
                             return(named_vector)
+                          },
+                          summary = function(){
+                            n <- length(y_matrix)
+                            x1 <- sqrt(var_reg_coef)
+                            x2 <- t_values
+                            x3 <- p_values
+                            x4 <- sum(res^2) / (n - length(reg_coef) - 1)
+                            x5 <- dof
+                            summary <- c(x1, x2, x3, x4, x5)
+                            return(summary)
                           },
                           plot = function(theme = "none"){
                             
@@ -104,10 +118,12 @@ linreg <- function(formula, data){
                        res_var = res_var, 
                        var_reg_coef = var_reg_coef,
                        t_values = t_values,
-                       p_values = p_values)  
+                       p_values = p_values,
+                       x_matrix = x_matrix,
+                       y_matrix = y_matrix)  
   return(linreg)
 }
 
 data(iris)
 k <- linreg(Petal.Length~Species, iris)
-k$plot() #add par. theme="light" or theme="dark"
+k$summary() #add par. theme="light" or theme="dark"
