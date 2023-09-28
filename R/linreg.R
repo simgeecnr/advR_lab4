@@ -74,12 +74,12 @@ linreg <- setRefClass("linreg",
                         
                         print = function(){
                           formula_summary <- as.character(formula)
-                          #summaryy <- list(formula_summary, reg_coef)
                           cat("\nCall:\n")
+                          #Problem : cant get dataset name !
                           cat("linreg(formula = ",as.character(formula),", data = ",as.character(substitute(data)),")\n", sep = "")
-  
+                          output_obj = t(reg_coef)
                           cat("\nCoefficients:\n")
-                          print.default(reg_coef)
+                          print.default(output_obj[1,])
                           #return()
                         },
                         resid = function(){
@@ -148,5 +148,6 @@ linreg <- setRefClass("linreg",
                       )
 )
 
-linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
-linreg_mod$print()
+data(iris)
+mod_object <- linreg(Petal.Length~Species, data = iris)
+mod_object$print()
