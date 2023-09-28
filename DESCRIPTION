@@ -1,13 +1,13 @@
 Package: advRlab04
 Type: Package
-Title: What the package does (short line)
+Title: Advanced R Lab 4
 Version: 1.0
 Date: 2023-09-22
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Simge Cinar, Hugo Morvan
+Maintainer: Hugo Morvan <hugmo418@student.liu.se>
+Description: This package contains an implementation of a Linear Regression class for the purpose of fulfilling Lab 4 in Advanced R class.
+License: GPU
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0), ggplot2
 Config/testthat/edition: 3
 RoxygenNote: 7.2.3
