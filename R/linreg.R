@@ -60,6 +60,8 @@ linreg <- setRefClass("linreg",
                             p_values[i] <- 2*pt(-abs(t_values[i]), df = dof, lower.tail = TRUE)
                           }
                           #Set the instance variables
+                          .self$formula <<- formula
+                          .self$data <<- data
                           .self$reg_coef <<- reg_coef
                           .self$fitted_val <<- fitted_val
                           .self$res <<- res
@@ -138,4 +140,4 @@ linreg <- setRefClass("linreg",
 )
 
 linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
-linreg_mod$pred()
+linreg_mod$print()
