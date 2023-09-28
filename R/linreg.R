@@ -75,10 +75,10 @@ linreg <- setRefClass("linreg",
                         print = function(){
                           formula_summary <- as.character(formula)
                           #summaryy <- list(formula_summary, reg_coef)
-                          
+                          cat("\nCall:\n")
                           cat("linreg(formula = ",as.character(formula),", data = ",as.character(substitute(data)),")\n", sep = "")
-                          
-                          cat("Coefficients:\n")
+  
+                          cat("\nCoefficients:\n")
                           print.default(reg_coef)
                           #return()
                         },
