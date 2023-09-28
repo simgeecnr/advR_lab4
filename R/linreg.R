@@ -75,7 +75,7 @@ linreg <- setRefClass("linreg",
                         print = function(){
                           formula_summary <- as.character(formula)
                           summaryy <- c(formula_summary, reg_coef)
-                          print(summaryy)
+                          print.default(summaryy)
                           return(summaryy)
                         },
                         resid = function(){
@@ -99,7 +99,7 @@ linreg <- setRefClass("linreg",
                           x4 <- sum(res^2) / (n - length(reg_coef) - 1)
                           x5 <- dof
                           summary <- c(formula_summary, x1, x2, x3, x4, x5)
-                          print(summary)
+                          print.default(summary)
                           return(NULL)
                         },
                         plot = function(theme = "none"){
