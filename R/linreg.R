@@ -73,7 +73,10 @@ linreg <- setRefClass("linreg",
                         },
                         
                         print = function(){
-                          return(reg_coef)
+                          formula_summary <- as.character(formula)
+                          summaryy <- c(formula_summary, reg_coef)
+                          print(summaryy)
+                          return(summaryy)
                         },
                         resid = function(){
                           return(res)
@@ -88,14 +91,16 @@ linreg <- setRefClass("linreg",
                           return(named_vector)
                         },
                         summary = function(){
+                          formula_summary <- as.character(formula)
                           n <- length(y_matrix)
                           x1 <- sqrt(var_reg_coef)
                           x2 <- t_values
                           x3 <- p_values
                           x4 <- sum(res^2) / (n - length(reg_coef) - 1)
                           x5 <- dof
-                          summary <- c(x1, x2, x3, x4, x5)
-                          return(summary)
+                          summary <- c(formula_summary, x1, x2, x3, x4, x5)
+                          print(summary)
+                          return(NULL)
                         },
                         plot = function(theme = "none"){
                           
@@ -139,5 +144,5 @@ linreg <- setRefClass("linreg",
                       )
 )
 
-linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
-linreg_mod$print()
+#linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
+#linreg_mod$print()
