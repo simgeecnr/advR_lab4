@@ -39,35 +39,37 @@ linreg <- setRefClass("linreg",
                           
                           #NECESSARY STATISTICS
                           #Regressions coefficients:
-                          reg_coef <<- solve(t(x_matrix) %*% x_matrix) %*% t(x_matrix) %*% y_matrix
+                          reg_coef <- solve(t(x_matrix) %*% x_matrix) %*% t(x_matrix) %*% y_matrix
                           colnames(reg_coef) <- "Coefficients:"
                           #The fitted values
-                          fitted_val <<- x_matrix %*% reg_coef
+                          fitted_val <- x_matrix %*% reg_coef
                           #The residuals:
-                          res <<- y_matrix - fitted_val
+                          res <- y_matrix - fitted_val
                           #The degrees of freedom:
-                          dof <<- nrow(iris) - length(reg_coef)
+                          dof <- nrow(iris) - length(reg_coef)
                           #The residual variance: 
-                          res_var <<- (t(res) %*% res) / dof
+                          res_var <- (t(res) %*% res) / dof
                           #The variance of the regression coefficients:
-                          sigma_hat <<- sqrt(sum(res^2) / dof)
-                          var_reg_coef <<- (sigma_hat^2) * diag(solve(t(x_matrix) %*% x_matrix))
+                          sigma_hat <- sqrt(sum(res^2) / dof)
+                          var_reg_coef <- (sigma_hat^2) * diag(solve(t(x_matrix) %*% x_matrix))
                           #The t-values for each coefficient:
-                          t_values <<- reg_coef / sqrt(var_reg_coef)
+                          t_values <- reg_coef / sqrt(var_reg_coef)
                           #p-value
                           p_values <- c()
                           for (i in 1:length(t_values)) {
-                            p_values[i] <<- 2*pt(-abs(t_values[i]), df = dof, lower.tail = TRUE)
+                            p_values[i] <- 2*pt(-abs(t_values[i]), df = dof, lower.tail = TRUE)
                           }
                           #Set the instance variables
-                          reg_coef <- reg_coef
-                          fitted_val <- fitted_val
-                          res <- res
-                          dof <- dof
-                          res_var <- res_var
-                          var_reg_coef <- var_reg_coef
-                          t_values <- t_values
-                          p_values <- p_values
+                          .self$formula <<- formula
+                          .self$data <<- data
+                          .self$reg_coef <<- reg_coef
+                          .self$fitted_val <<- fitted_val
+                          .self$res <<- res
+                          .self$dof <<- dof
+                          .self$res_var <<- res_var
+                          .self$var_reg_coef <<- var_reg_coef
+                          .self$t_values <<- t_values
+                          .self$p_values <<- p_values
                         },
                         
                         print = function(){
@@ -137,5 +139,5 @@ linreg <- setRefClass("linreg",
                       )
 )
 
-#linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
-#linreg_mod$pred()
+linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
+linreg_mod$print()
