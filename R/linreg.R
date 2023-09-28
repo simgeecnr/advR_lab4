@@ -40,7 +40,7 @@ linreg <- setRefClass("linreg",
                           #NECESSARY STATISTICS
                           #Regressions coefficients:
                           reg_coef <- solve(t(x_matrix) %*% x_matrix) %*% t(x_matrix) %*% y_matrix
-                          colnames(reg_coef) <- "Coefficients:"
+                          #colnames(reg_coef) <- "Coefficients:"
                           #The fitted values
                           fitted_val <- x_matrix %*% reg_coef
                           #The residuals:
@@ -61,7 +61,7 @@ linreg <- setRefClass("linreg",
                           }
                           #Set the instance variables
                           .self$formula <<- formula
-                          .self$data <<- data
+                          #.self$data <<- data
                           .self$reg_coef <<- reg_coef
                           .self$fitted_val <<- fitted_val
                           .self$res <<- res
@@ -74,9 +74,13 @@ linreg <- setRefClass("linreg",
                         
                         print = function(){
                           formula_summary <- as.character(formula)
-                          summaryy <- c(formula_summary, reg_coef)
-                          print.default(summaryy)
-                          return(summaryy)
+                          #summaryy <- list(formula_summary, reg_coef)
+                          
+                          cat("linreg(formula = ",as.character(formula),", data = ",as.character(substitute(data)),")\n", sep = "")
+                          
+                          cat("Coefficients:\n")
+                          print.default(reg_coef)
+                          #return()
                         },
                         resid = function(){
                           return(res)
@@ -98,9 +102,9 @@ linreg <- setRefClass("linreg",
                           x3 <- p_values
                           x4 <- sum(res^2) / (n - length(reg_coef) - 1)
                           x5 <- dof
-                          summary <- c(formula_summary, x1, x2, x3, x4, x5)
+                          summary <- list(formula_summary, x1, x2, x3, x4, x5)
                           print.default(summary)
-                          return(NULL)
+                          return()
                         },
                         plot = function(theme = "none"){
                           
@@ -144,5 +148,5 @@ linreg <- setRefClass("linreg",
                       )
 )
 
-#linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
-#linreg_mod$print()
+linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
+linreg_mod$print()
