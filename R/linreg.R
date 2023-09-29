@@ -151,11 +151,12 @@ linreg <- setRefClass("linreg",
                             geom_point() +
                             stat_summary(aes(y = y_val, group = 1), fun=mean, color ="red", geom="line", group=1) +
                             labs(x = "Fitted Values", y = "Standardized Residuals", title = "Scale-Location")
-                          if(theme == "light"){
+                          #Theme selection
+                          if(theme == "liu_light"){
                             p1 <- p1 + liu_theme_light()
                             p2 <- p2 + liu_theme_light()
                             return(list(p1,p2))
-                          }else if(theme == "dark"){
+                          }else if(theme == "liu_dark"){
                             p1 <- p1 + liu_theme_dark()
                             p2 <- p2 + liu_theme_dark()
                             return(list(p1,p2))
