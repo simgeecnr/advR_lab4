@@ -22,13 +22,16 @@ linreg <- setRefClass("linreg",
                                     t_values = "matrix",
                                     p_values = "numeric",
                                     x_matrix = "matrix",
-                                    y_matrix = "matrix"),
+                                    y_matrix = "matrix",
+                                    data_name = "character"),
                       
                       methods = list(
                         initialize = function(formula, data){
                           
                           #formula <- as.formula(formula)
                           #data <- as.data.frame(data)
+                          
+                          data_name <- deparse(substitute(data))
                           
                           #CREATE MATRIX FROM DATAFRAME
                           x_matrix <- model.matrix(formula, data)
@@ -59,9 +62,11 @@ linreg <- setRefClass("linreg",
                           for (i in 1:length(t_values)) {
                             p_values[i] <- 2*pt(-abs(t_values[i]), df = dof, lower.tail = TRUE)
                           }
+                          
                           #Set the instance variables
+                          .self$data_name <<- data_name
                           .self$formula <<- formula
-                          #.self$data <<- data
+                          .self$data <<- data
                           .self$reg_coef <<- reg_coef
                           .self$fitted_val <<- fitted_val
                           .self$res <<- res
@@ -73,10 +78,10 @@ linreg <- setRefClass("linreg",
                         },
                         
                         print = function(){
-                          formula_summary <- as.character(formula)
+                          
                           cat("\nCall:\n")
                           #Problem : cant get dataset name !
-                          cat("linreg(formula = ",as.character(formula),", data = ",as.character(substitute(data)),")\n", sep = "")
+                          cat("linreg(formula = ", deparse(formula), ", data = ", data_name,")\n", sep = "")
                           output_obj = t(reg_coef)
                           cat("\nCoefficients:\n")
                           print.default(output_obj[1,])
@@ -85,52 +90,67 @@ linreg <- setRefClass("linreg",
                         resid = function(){
                           return(res)
                         },
+                        
                         pred = function(){
                           return(fitted_val)
                         },
+                        
                         coef = function(){
                           names <- rownames(reg_coef)
                           values <- c(reg_coef)
                           named_vector <- setNames(values, names)
                           return(named_vector)
                         },
+                        
                         summary = function(){
-                          formula_summary <- as.character(formula)
+                          #********This part is not working
+                          formula_to_char <- as.character(formula)
+                          
                           n <- length(y_matrix)
                           x1 <- sqrt(var_reg_coef)
                           x2 <- t_values
                           x3 <- p_values
                           x4 <- sum(res^2) / (n - length(reg_coef) - 1)
                           x5 <- dof
-                          summary <- list(formula_summary, x1, x2, x3, x4, x5)
-                          print.default(summary)
-                          return()
-                        },
-                        plot = function(theme = "none"){
+                          summary <- list(formula_to_char, x1, x2, x3, x4, dof)
                           
+                          output_sum <- data.frame(
+                            Estimate = reg_coef,
+                            `Std. Error` = x1,
+                            `t value` = t_values,
+                            `p value` = p_values
+                          )
+                          
+                          cat("\nCoefficients:\n")
+                          
+                          #as the estimate of ˆσ and the degrees of freedom in the model.
+                          standardized_residuals <- res %*% (1 / sqrt(res_var))
+                          
+                          
+                          #*********This part is working
+                          cat("Residual standard error: ", sqrt(res_var), " on ", dof, " degrees of freedom", sep="")
+                        },
+                        
+                        plot = function(theme = "none"){
                           source("R/liu_theme.R")
                           data2 <- data.frame(Fitted = fitted_val, Residuals = res)
-                          
+                          #---------------PLOT 1---------------------------
                           # Create a residuals vs. fitted values plot using ggplot2
                           p1 <-ggplot(data2, aes(x = fitted_val, y = res)) +
                             geom_point() +
                             stat_summary(aes(y = res, group = 1), fun=median, color ="red", geom="line", group=1) +
                             labs(x = "Fitted Values", y = "Residuals", title = "Residuals vs. Fitted Values Plot")
-                          
-                          #Second plot
+                          #--------------PLOT 2---------------------------
                           standardized_residuals <- res %*% (1 / sqrt(res_var))
                           y_val <- sqrt(abs(standardized_residuals))
-                          
                           data3 <- data.frame(Fitted = fitted_val, StdRes = y_val)
                           colnames(data3) <- c("Fitted", "StdRes")
-                          
                           
                           # Create a residuals vs. fitted values plot using ggplot2
                           p2 <- ggplot(data3, aes(x = fitted_val, y = y_val)) +
                             geom_point() +
                             stat_summary(aes(y = y_val, group = 1), fun=mean, color ="red", geom="line", group=1) +
                             labs(x = "Fitted Values", y = "Standardized Residuals", title = "Scale-Location")
-                          
                           if(theme == "light"){
                             p1 <- p1 + liu_theme_light()
                             p2 <- p2 + liu_theme_light()
@@ -148,6 +168,11 @@ linreg <- setRefClass("linreg",
                       )
 )
 
-data(iris)
-mod_object <- linreg(Petal.Length~Species, data = iris)
-mod_object$print()
+#test code
+#data(iris)
+
+#linreg_mod <- linreg$new(Petal.Length~Species, data = iris)
+#linreg_mod$print()
+#linreg_mod$plot()
+#linreg_mod$plot(theme="dark")
+#linreg_mod$plot(theme="light")
