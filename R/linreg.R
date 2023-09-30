@@ -80,7 +80,7 @@ linreg <- setRefClass("linreg",
                         print = function(){
                           
                           cat("\nCall:\n")
-                         
+                          #Problem : cant get dataset name !
                           cat("linreg(formula = ", deparse(formula), ", data = ", data_name,")\n", sep = "")
                           output_obj = t(reg_coef)
                           cat("\nCoefficients:\n")
@@ -110,44 +110,32 @@ linreg <- setRefClass("linreg",
                           x1 <- sqrt(var_reg_coef)
                           x2 <- t_values
                           x3 <- p_values
+                          
                           x4 <- sum(res^2) / (n - length(reg_coef) - 1)
                           x5 <- dof
                           summary <- list(formula_to_char, x1, x2, x3, x4, dof)
+                          
                           summ <- sum(res^2)
                           x4 <- sqrt(sum(res^2) / dof)
                           
-                          f_reg_coef <- as.numeric(sprintf("%.5f", reg_coef))
-                          f_x1 <- as.numeric(sprintf("%.5f", x1))
-                          f_x2 <- as.numeric(sprintf("%.3f", x2))
-                          f_x3 <- sprintf('%.2e***', as.numeric(x3))
                           
-                          summary_mat <- cbind(f_reg_coef, as.vector(f_x1), as.vector(f_x2), as.vector(f_x3))
-                          new_column_names <- c("", "", "", "")
-                          colnames(summary_mat) <- new_column_names
-                          rownames(summary_mat) <- rownames(reg_coef)
+                          sml <- ifelse(p_values < 2e-16, '<2e-16', round(p_values,7))
+                          sig_code <- p_values
+                          sig_code[sig_code < 0.001] <- "***"
+                          sig_code[sig_code >= 0.001] <- "**"
+                          sig_code[sig_code >= 0.01] <- "*"
+                          sig_code[sig_code >= 0.05] <- "."
+                          sig_code[sig_code >= 0.1] <- " "
                           
-                          print.default(summary_mat)
+                          summary_df <- data.frame('Estimate' = round(as.vector(reg_coef),5), 'Std. Error' = round(as.vector(x1),5), 't-values' = round(as.vector(x2),3), 'p-values'= sml, "Significance Code" = sig_code)
+                          rownames(summary_df) <- rownames(reg_coef)
+                          colnames(summary_df) <- c(" ", " ", " ", " ", " ")
+                          
+                          base::print(summary_df)
                           message <- paste("Residual standard error:", x4, "on", dof, "degrees of freedom")
                           cat(message, "\n")
-                          #return()
-                        },
-                        plot = function(theme = "none"){
-                          
-                          output_sum <- data.frame(
-                            Estimate = reg_coef,
-                            `Std. Error` = x1,
-                            `t value` = t_values,
-                            `p value` = p_values
-                          )
-                          
-                          cat("\nCoefficients:\n")
-                          
-                          #as the estimate of ˆσ and the degrees of freedom in the model.
-                          standardized_residuals <- res %*% (1 / sqrt(res_var))
                           
                           
-                          #*********This part is working
-                          cat("Residual standard error: ", sqrt(res_var), " on ", dof, " degrees of freedom", sep="")
                         },
                         
                         plot = function(theme = "none"){
@@ -189,16 +177,6 @@ linreg <- setRefClass("linreg",
                       )
 )
 
-#need to fix "shell" function
-
-#test code
-#data(iris)
-
-#linreg_mod <- linreg$new(Petal.Length~Species, data = iris)
-#linreg_mod$print()
-#linreg_mod$plot()
-#linreg_mod$plot(theme="dark")
-#linreg_mod$plot(theme="light")
 data(iris)
 mod_object <- linreg(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
-mod_object$print()
+mod_object$summary()
