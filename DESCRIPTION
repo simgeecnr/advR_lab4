@@ -6,8 +6,10 @@ Date: 2023-09-22
 Author: Simge Cinar, Hugo Morvan
 Maintainer: Hugo Morvan <hugmo418@student.liu.se>
 Description: This package contains an implementation of a Linear Regression class for the purpose of fulfilling Lab 4 in Advanced R class.
-License: GPU
+License: GPL | file LICENSE
 Suggests: 
-    testthat (>= 3.0.0), ggplot2
+    testthat (>= 3.0.0)
+Imports: 
+    ggplot2
 Config/testthat/edition: 3
 RoxygenNote: 7.2.3

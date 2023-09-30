@@ -151,6 +151,7 @@ linreg <- setRefClass("linreg",
                             geom_point() +
                             stat_summary(aes(y = y_val, group = 1), fun=mean, color ="red", geom="line", group=1) +
                             labs(x = "Fitted Values", y = "Standardized Residuals", title = "Scale-Location")
+                          #to show abs and sqrt in axis title, use expression()
                           #Theme selection
                           if(theme == "liu_light"){
                             p1 <- p1 + liu_theme_light()
@@ -168,6 +169,8 @@ linreg <- setRefClass("linreg",
                         }
                       )
 )
+
+#need to fix "shell" function
 
 #test code
 #data(iris)
