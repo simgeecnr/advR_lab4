@@ -103,12 +103,20 @@ linreg <- setRefClass("linreg",
                           summ <- sum(res^2)
                           x4 <- sqrt(sum(res^2) / dof)
                           
-                          summary_mat <- cbind(reg_coef, as.vector(x1), as.vector(t(x2)), x3)
-                          new_column_names <- c("Estimate", "Std. Error", "t-value", "p-value")
+                          f_x1 <- as.numeric(sprintf("%.5f", x1))
+                          f_x2 <- as.numeric(sprintf("%.3f", x2))
+                          f_x3 <- sprintf('%.2e***', as.numeric(x3))
+                          
+                          summary_mat <- cbind(reg_coef, as.vector(f_x1), as.vector(f_x2), as.vector(f_x3))
+                          new_column_names <- c("", "", "", "")
                           colnames(summary_mat) <- new_column_names
+                          
                           print.default(summary_mat)
                           message <- paste("Residual standard error:", x4, "on", dof, "degrees of freedom")
                           cat(message, "\n")
+                          
+                          print.default(summary_mat[1,1])
+                          
                           #return()
                         },
                         plot = function(theme = "none"){
