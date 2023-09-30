@@ -103,8 +103,11 @@ linreg <- setRefClass("linreg",
                           x4 <- sum(res^2) / (n - length(reg_coef) - 1)
                           x5 <- dof
                           summary <- list(formula_summary, x1, x2, x3, x4, x5)
-                          print.default(summary)
-                          return()
+                          print.default(x1)
+                          print.default(t(x2))
+                          print.default(x3)
+                          #print.default(summary)
+                          #return()
                         },
                         plot = function(theme = "none"){
                           
@@ -149,5 +152,5 @@ linreg <- setRefClass("linreg",
 )
 
 data(iris)
-mod_object <- linreg(Petal.Length~Species, data = iris)
-mod_object$print()
+mod_object <- linreg(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
+mod_object$summary()
