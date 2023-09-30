@@ -80,7 +80,7 @@ linreg <- setRefClass("linreg",
                         print = function(){
                           
                           cat("\nCall:\n")
-                          #Problem : cant get dataset name !
+                         
                           cat("linreg(formula = ", deparse(formula), ", data = ", data_name,")\n", sep = "")
                           output_obj = t(reg_coef)
                           cat("\nCoefficients:\n")
@@ -110,11 +110,9 @@ linreg <- setRefClass("linreg",
                           x1 <- sqrt(var_reg_coef)
                           x2 <- t_values
                           x3 <- p_values
-<<<<<<< HEAD
                           x4 <- sum(res^2) / (n - length(reg_coef) - 1)
                           x5 <- dof
                           summary <- list(formula_to_char, x1, x2, x3, x4, dof)
-=======
                           summ <- sum(res^2)
                           x4 <- sqrt(sum(res^2) / dof)
                           
@@ -134,7 +132,6 @@ linreg <- setRefClass("linreg",
                           #return()
                         },
                         plot = function(theme = "none"){
->>>>>>> e00c33571896a18ce5026913c5c8358794f73046
                           
                           output_sum <- data.frame(
                             Estimate = reg_coef,
@@ -192,7 +189,6 @@ linreg <- setRefClass("linreg",
                       )
 )
 
-<<<<<<< HEAD
 #need to fix "shell" function
 
 #test code
@@ -203,8 +199,6 @@ linreg <- setRefClass("linreg",
 #linreg_mod$plot()
 #linreg_mod$plot(theme="dark")
 #linreg_mod$plot(theme="light")
-=======
 data(iris)
 mod_object <- linreg(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
-mod_object$summary()
->>>>>>> e00c33571896a18ce5026913c5c8358794f73046
+mod_object$print()
