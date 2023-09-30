@@ -118,7 +118,7 @@ linreg <- setRefClass("linreg",
                           summ <- sum(res^2)
                           x4 <- sqrt(sum(res^2) / dof)
                           
-                          
+                          # --- P-values handling method shown during Seminar session on 29/09 by group 12 ---
                           sml <- ifelse(p_values < 2e-16, '<2e-16', round(p_values,7))
                           sig_code <- p_values
                           sig_code[sig_code < 0.001] <- "***"
@@ -126,6 +126,7 @@ linreg <- setRefClass("linreg",
                           sig_code[sig_code >= 0.01] <- "*"
                           sig_code[sig_code >= 0.05] <- "."
                           sig_code[sig_code >= 0.1] <- " "
+                          # --- --- ---
                           
                           summary_df <- data.frame('Estimate' = round(as.vector(reg_coef),5), 'Std. Error' = round(as.vector(x1),5), 't-values' = round(as.vector(x2),3), 'p-values'= sml, "Significance Code" = sig_code)
                           rownames(summary_df) <- rownames(reg_coef)
@@ -176,7 +177,3 @@ linreg <- setRefClass("linreg",
                         }
                       )
 )
-
-data(iris)
-mod_object <- linreg(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
-mod_object$summary()
