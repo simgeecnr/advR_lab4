@@ -1,0 +1,29 @@
+---
+title: "lab04-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{lab04-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+```{r setup}
+library(advRlab04)
+```
+
+```{r}
+linreg_mod <- linreg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris)
+```
+
+```{r}
+linreg_mod$print()
+```
+

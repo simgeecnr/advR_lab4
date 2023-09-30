@@ -8,8 +8,11 @@ Maintainer: Hugo Morvan <hugmo418@student.liu.se>
 Description: This package contains an implementation of a Linear Regression class for the purpose of fulfilling Lab 4 in Advanced R class.
 License: GPL | file LICENSE
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Imports: 
     ggplot2
 Config/testthat/edition: 3
 RoxygenNote: 7.2.3
+VignetteBuilder: knitr
