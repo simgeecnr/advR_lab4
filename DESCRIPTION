@@ -17,5 +17,6 @@ Imports:
 Config/testthat/edition: 3
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
+VignetteEngine: knitr::rmarkdown
 Depends: 
     R (>= 3.5.0)
