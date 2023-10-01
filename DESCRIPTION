@@ -12,9 +12,10 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 Imports: 
-    ggplot2
+    ggplot2,
+    methods
 Config/testthat/edition: 3
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)

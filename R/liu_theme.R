@@ -1,6 +1,13 @@
+#' LiU light theme
+#' @name liu_theme_light
+#' @description This function is a LiU-inspired theme for ggplot2
+#' @return returns a ggplot2 theme
+#' @export
+#' @importFrom ggplot2 ggplot theme element_text element_rect element_blank
+
 liu_theme_light <- function() {
-  theme(
-    text = element_text( size = 12),
+  ggplot2::theme(
+    text = element_text(size = 12),
     axis.text = element_text(size = 10, color = "black"),
     axis.title = element_text(size = 12, color = "black"),
     plot.title = element_text(size = 14, face = "bold"),
@@ -13,24 +20,3 @@ liu_theme_light <- function() {
     legend.title = element_text(size = 12)
   )
 }
-
-liu_theme_dark <- function(){
-  theme(
-    text = element_text( size = 12),
-    axis.text = element_text(size = 10, color = "white"),
-    axis.title = element_text(size = 12, color = "white"),
-    plot.title = element_text(size = 14, face = "bold", color = "white"),
-    panel.background = element_rect(fill = "white"),
-    plot.background = element_rect(fill = "deepskyblue2"),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.background = element_rect(fill = "deepskyblue2"),
-    legend.text = element_text(size = 10),
-    legend.title = element_text(size = 12)
-  )
-}
-#Note : Cannot change the font because availble font is OS dependant
-#To use theme  : include the following line:
-#source("liu_theme.R")
-
-#Then, when using ggplot, simply use "+ liu_theme_light/dark()"

@@ -18,3 +18,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(advRlab04)
 ```
+# Test
+```{r}
+l <- linreg$new(Petal.Width ~ Species, iris)
+```
