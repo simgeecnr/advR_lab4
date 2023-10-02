@@ -38,11 +38,11 @@ linreg <- setRefClass("linreg",
                           .self$data_name <<-  deparse(substitute(data))
                           
                           #CREATE MATRIX FROM DATAFRAME
-                          x_matrix <- model.matrix(formula, data)
+                          x_matrix <<- model.matrix(formula, data)
                           #Extract the dependent variable
-                          y_data <- data.frame(iris[, (all.vars(.self$formula)[1])])
-                          y_matrix <- as.matrix(y_data)
-                          colnames(y_matrix) <- all.vars(formula)[1]
+                          y_data <<- data.frame(iris[, (all.vars(.self$formula)[1])])
+                          y_matrix <<- as.matrix(y_data)
+                          colnames(y_matrix) <<- all.vars(formula)[1]
                           
                           #NECESSARY STATISTICS
                           #Regressions coefficients:
@@ -165,12 +165,15 @@ linreg <- setRefClass("linreg",
                           #-----Theme selection---------
                           if(theme == "liu_light"){
                             p1 <- p1 + liu_theme_light()
+                            p1
                             p2 <- p2 + liu_theme_light()
-                            return(list(p1,p2))
+                            p2
                           }else {
                             p1 <- p1 + theme_bw()
+                            p1
                             p2 <- p2 + theme_bw()
-                            return(list(p1,p2))
+                            p2
+                            #return(list(p1,p2))
                           }
                         }
                       )
