@@ -6,12 +6,13 @@
 #' @param data a dataframe
 #' @return returns a RC class
 #' @export
-#' @importFrom ggplot2 ggplot aes theme 
+#' @importFrom ggplot2 ggplot aes theme geom_point stat_summary labs theme_bw
 #' @importFrom methods new
-
+#' @importFrom gridExtra grid.arrange
 
 
 library(ggplot2)
+library(gridExtra)
 linreg <- setRefClass("linreg",
                       fields = list(formula = "formula",
                                     data = "data.frame",
@@ -86,24 +87,19 @@ linreg <- setRefClass("linreg",
                           print.default(output_obj[1,])
                           #return()
                         },
-                        
                         resid = function(){
                           return(.self$res)
-                        },
-                        
+                        },  
                         pred = function(){
                           return(.self$fitted_val)
                         },
-                        
                         coef = function(){
                           names <- rownames(.self$reg_coef)
                           values <- c(.self$reg_coef)
                           named_vector <- setNames(values, names)
                           return(named_vector)
                         },
-                        
                         summary = function(.self){
-                          #********This part is not working
                           formula_to_char <- as.character(.self$formula)
                           y_data <- data.frame(iris[, (all.vars(.self$formula)[1])])
                           y_matrix <- as.matrix(y_data)
@@ -135,10 +131,8 @@ linreg <- setRefClass("linreg",
                           
                           
                         },
-                        
                         plot = function(theme = "none"){
-                          #---Custom Theme Source file---
-                          source("R/liu_theme.R")
+                        
                           #------------------------------
                           
                           df_p1 <- data.frame(Fitted = .self$fitted_val, Residuals = .self$res)
@@ -164,17 +158,38 @@ linreg <- setRefClass("linreg",
                           
                           #-----Theme selection---------
                           if(theme == "liu_light"){
-                            p1 <- p1 + liu_theme_light()
-                            p1
-                            p2 <- p2 + liu_theme_light()
-                            p2
+                            p1 <- p1 + ggplot2::theme(
+                              text = element_text(size = 12),
+                              axis.text = element_text(size = 10, color = "black"),
+                              axis.title = element_text(size = 12, color = "black"),
+                              plot.title = element_text(size = 14, face = "bold"),
+                              plot.background = element_rect(fill = "lightblue"),
+                              panel.background = element_rect(fill = "white"),
+                              panel.grid.major = element_blank(),
+                              panel.grid.minor = element_blank(),
+                              legend.background = element_rect(fill = "lightblue"),
+                              legend.text = element_text(size = 10),
+                              legend.title = element_text(size = 12)
+                            ) 
+                            p2 <- p2 + ggplot2::theme(
+                              text = element_text(size = 12),
+                              axis.text = element_text(size = 10, color = "black"),
+                              axis.title = element_text(size = 12, color = "black"),
+                              plot.title = element_text(size = 14, face = "bold"),
+                              plot.background = element_rect(fill = "lightblue"),
+                              panel.background = element_rect(fill = "white"),
+                              panel.grid.major = element_blank(),
+                              panel.grid.minor = element_blank(),
+                              legend.background = element_rect(fill = "lightblue"),
+                              legend.text = element_text(size = 10),
+                              legend.title = element_text(size = 12)
+                            )
                           }else {
                             p1 <- p1 + theme_bw()
-                            p1
                             p2 <- p2 + theme_bw()
-                            p2
                             #return(list(p1,p2))
                           }
+                          gridExtra::grid.arrange(p1, p2, ncol=2)
                         }
                       )
 )

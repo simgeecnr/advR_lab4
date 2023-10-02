@@ -13,7 +13,8 @@ Suggests:
     testthat (>= 3.0.0)
 Imports: 
     ggplot2,
-    methods
+    methods,
+    gridExtra
 Config/testthat/edition: 3
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr

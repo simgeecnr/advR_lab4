@@ -39,13 +39,9 @@ pred function shows the predictions
 head(linreg_mod$pred())
 ```
 
-summary function gives the the coefficients with their standard error, t-value and p-value as well as the estimate of varinace and the degrees of freedom in the model.
+summary function gives the the coefficients with their standard error, t-value and p-value as well as the estimate of variance and the degrees of freedom in the model.
 ```{r}
 linreg_mod$summary()
 ```
 
-Plot of 2 graphs
-```{r plot}
-linreg_mod$plot()
-```
 
