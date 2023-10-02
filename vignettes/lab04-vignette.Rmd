@@ -14,11 +14,37 @@ knitr::opts_chunk$set(
 )
 ```
 
+## HOW LINEAR REGRESSION PACKAGE WORKS ?
 
+First load the necessary library
 ```{r setup}
 library(advRlab04)
 ```
-# Test
+
+Creating the object and assign it to a variable
 ```{r}
-l <- linreg$new(Petal.Width ~ Species, iris)
+linreg_mod <- linreg$new(Petal.Width ~ Species, iris)
 ```
+print function displays the formula of the model and regression coefficients
+```{r}
+linreg_mod$print()
+```
+resid function displays the residuals
+```{r}
+head(linreg_mod$resid())
+```
+
+pred function shows the predictions
+```{r}
+head(linreg_mod$pred())
+```
+
+summary function gives the the coefficients with their standard error, t-value and p-value as well as the estimate of varinace and the degrees of freedom in the model.
+```{r}
+linreg_mod$summary()
+```
+
+```{r}
+linreg_mod$plot()
+```
+
