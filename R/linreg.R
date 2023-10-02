@@ -77,6 +77,16 @@ linreg <- setRefClass("linreg",
                           print.default(output_obj[1,])
                           #return()
                         },
+                        show = function(.self){
+                          
+                          cat("\nCall:\n")
+                          cat("linreg(formula = ", deparse(.self$formula), ", data = ", .self$data_name,")\n", sep = "")
+                          output_obj = t(.self$reg_coef)
+                          cat("\nCoefficients:\n")
+                          print.default(output_obj[1,])
+                          #return()
+                        },
+                        
                         resid = function(){
                           return(.self$res)
                         },
