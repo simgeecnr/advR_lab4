@@ -144,7 +144,7 @@ linreg <- setRefClass("linreg",
                           df_p1 <- data.frame(Fitted = .self$fitted_val, Residuals = .self$res)
                           #---------------PLOT 1---------------------------
                           # Create a residuals vs. fitted values plot using ggplot2
-                          p1 <-ggplot2(df_p1, aes(x = .self$fitted_val, y = .self$res)) +
+                          p1 <-ggplot(df_p1, aes(x = .self$fitted_val, y = .self$res)) +
                             geom_point() +
                             stat_summary(aes(y = .self$res, group = 1), fun=median, color ="red", geom="line", group=1) +
                             labs(x = "Fitted Values", y = "Residuals", title = "Residuals vs. Fitted Values Plot")
@@ -156,7 +156,7 @@ linreg <- setRefClass("linreg",
                           colnames(df_p2) <- c("Fitted", "StdRes")
                           
                           # Create a residuals vs. fitted values plot using ggplot2
-                          p2 <- ggplot2(df_p2, aes(x = .self$fitted_val, y = y_val)) +
+                          p2 <- ggplot(df_p2, aes(x = .self$fitted_val, y = y_val)) +
                             geom_point() +
                             stat_summary(aes(y = y_val, group = 1), fun=mean, color ="red", geom="line", group=1) +
                             labs(x = "Fitted Values", y = "Standardized Residuals", title = "Scale-Location")

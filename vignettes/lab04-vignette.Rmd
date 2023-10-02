@@ -43,8 +43,3 @@ summary function gives the the coefficients with their standard error, t-value a
 ```{r}
 linreg_mod$summary()
 ```
-
-```{r}
-linreg_mod$plot()
-```
-
